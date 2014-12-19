@@ -7,7 +7,7 @@ jQuery-Lcn-Circle-Range-Select
 Demo
 ----
 
-[demo.html](demo.html)
+[demo.html](http://htmlpreview.github.com/?https://github.com/FaiblUG/jQuery-Lcn-Circle-Range-Select/blob/master/demo.htmldemo.html)
 
 
 Usage
