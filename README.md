@@ -21,8 +21,9 @@ Usage
     
     <input type="text" class="circle-range-select" value="0;360" /></div>
     
-### 3. Include Script
+### 3. Include Script and Styles
     
+    <link rel="stylesheet" href="dist/jquery.lcnCircleRangeSelect.css">
     <script src="dist/jquery.lcnCircleRangeSelect.js"></script>
     
 ### 4. Initialize Widget
