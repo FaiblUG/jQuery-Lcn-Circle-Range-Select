@@ -1,13 +1,13 @@
 jQuery-Lcn-Circle-Range-Select
 ==============================
 
-360 degree circle range selext input widget
+360 degree circle range select input widget
 
 
 Demo
 ----
 
-[demo.html](http://htmlpreview.github.com/?https://github.com/FaiblUG/jQuery-Lcn-Circle-Range-Select/blob/master/demo.htmldemo.html)
+[demo.html](http://htmlpreview.github.com/?https://github.com/FaiblUG/jQuery-Lcn-Circle-Range-Select/blob/master/demo.html)
 
 
 Usage
