@@ -1,6 +1,6 @@
 {
   "name": "jquery-lcn-circle-range-select",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "360 degree circle range selext input widget",
   "main": "dist/jquery.lcnCircleRangeSelect.js",
   "scripts": {
