@@ -1,1 +1,170 @@
-!function(e,t){var a=e.jQuery;if("function"==typeof define&&define.amd)a?define([],t.bind(null,a)):define(["jquery"],t);else if("object"==typeof exports)module.exports=t(a?a:require("jquery"));else{if(!a)throw"Missing required jQuery dependency";t(a)}}(this,function(e){function t(e,t,n){var i=e.find("canvas"),r=i[0];r.width=e.width()+10,r.height=e.height()+10;var o=r.getContext("2d");o.clearRect(0,0,r.width,r.height),o.beginPath();var d=e.width()/2;o.arc(r.width/2,r.height/2,d,a(t)-Math.PI/2,a(n)-Math.PI/2,!1),o.lineWidth=8,o.strokeStyle=i.css("color"),o.stroke()}function a(e){return e*(Math.PI/180)}function n(a){var n=a.find(".handle"),i=a.find(".handle1"),r=a.find(".handle2"),o=a.width();a.height(o);var d=o/2,l=n.width(),s=n.height();n.each(function(t,n){var i=e(n),r=i.attr("data-value"),o=Math.round(d*Math.sin(r*Math.PI/180)),u=Math.round(d*-Math.cos(r*Math.PI/180));i.css({left:o+d-l/2,top:u+d-s/2}),a.find(i.attr("data-value-target")).html(i.attr("data-value")+"&deg;")}),value1=i.attr("data-value"),value2=r.attr("data-value"),t(a,value1,value2),a.find("input").val(value1+";"+value2).trigger("change")}function i(t){var a=t.val()||"0;0";a=a.split(";");var i=parseInt(a[0],10),d=parseInt(a[1],10);$container=e('<div class="circle-range-select-wrapper"></div>'),t.wrap($container),$container=t.parent(),$container.append('<div class="handle handle1" data-value="'+i+'" data-value-target=".value1"></div>'),$container.append('<div class="handle handle2" data-value="'+d+'" data-value-target=".value2"></div>'),$container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>'),$container.append('<canvas class="selected-range"></canvas>'),n($container),$container.on("mousedown touchstart",".handle",function(t){r=!0,t.preventDefault(),o=e(t.target),e(document).one("mouseup touchend",function(){r=!1,o=null})}),e(window).on("resize",n.bind(null,$container))}var r=!1,o=null;e(document).on("mousemove touchmove",function(t){if(r){var a=o.closest(".circle-range-select-wrapper"),i=a.width()/2;if(!t.offsetX&&t.originalEvent.touches){var d=e(t.target).offset();t.offsetX=t.originalEvent.touches[0].pageX-d.left,t.offsetY=t.originalEvent.touches[0].pageY-d.top}else if("undefined"==typeof t.offsetX||"undefined"==typeof t.offsetY){var d=e(t.target).offset();t.offsetX=t.pageX-d.left,t.offsetY=t.pageY-d.top}var l={x:t.target.offsetLeft+t.offsetX,y:t.target.offsetTop+t.offsetY},s=Math.atan2(l.x-i,l.y-i),u=-s/(Math.PI/180)+180,f=Math.abs(u-90*Math.round(u/90));5>=f&&(u=90*Math.round(u/90)),360==u&&(u=0);var c=Math.round(u);o.attr("data-value",c),n(a)}}),e.fn.lcnCircleRangeSelect=function(){return this.each(function(){i(e(this))})}});
+(function (root, factory) {
+  var $ = root.jQuery;
+
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    if ($) {
+      define([], factory.bind(null, $));
+    }
+    else {
+      define(['jquery'], factory);
+    }
+  } else if (typeof exports === 'object') {
+    // Node, CommonJS-like
+    if ($) {
+      module.exports = factory($);
+    }
+    else {
+      module.exports = factory(require('jquery'));
+    }
+  } else {
+    // Browser globals (root is window)
+    if ($) {
+      factory($); // no global needed as we store it as a jQuery plugin on jQuery.fn
+    }
+    else {
+      throw 'Missing required jQuery dependency';
+    }
+  }
+}(this, function ($) {
+  var isDragging = false;
+  var $currentHandle = null;
+
+  function drawCircle($container, degreeStart, degreeEnd) {
+    var
+      $canvas = $container.find('canvas'),
+      canvas = $canvas[0]
+    ;
+
+    var outerWidth = $container.outerWidth();
+    var innerWidth = $container.innerWidth();
+    var borderWidth = outerWidth - innerWidth;
+    $canvas.css('left', borderWidth*-1);
+    $canvas.css('top', borderWidth*-1);
+
+
+    var radius = (outerWidth - borderWidth / 2) / 2;
+    canvas.width = outerWidth + borderWidth;
+    canvas.height = canvas.width;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.beginPath();
+
+
+
+    context.arc(canvas.width / 2, canvas.width / 2,radius, degreesToRadians(degreeStart)-Math.PI/2, degreesToRadians(degreeEnd)-Math.PI/2, false);
+    context.lineWidth = borderWidth/2;
+    context.strokeStyle = $canvas.css('color');
+    context.stroke();
+  }
+
+  function degreesToRadians (degrees) {
+    return degrees * (Math.PI/180);
+  }
+
+  function updateWidget($container) {
+    var $handles = $container.find('.handle');
+    var $handle1 = $container.find('.handle1');
+    var $handle2 = $container.find('.handle2');
+
+
+    var outerWidth = $container.outerWidth();
+    var innerWidth = $container.innerWidth();
+    var borderWidth = (outerWidth - innerWidth) / 2;
+    var handleWidth = $handles.outerWidth();
+
+    var radius = (outerWidth - borderWidth) / 2;
+
+    $handles.each(function(idx, handle) {
+      var $handle = $(handle);
+      var deg = $handle.attr('data-value');
+
+      var X = Math.round(radius + radius * Math.sin(deg*Math.PI/180));
+      var Y = Math.round(radius + radius * -Math.cos(deg*Math.PI/180));
+      $handle.css({ left: X, top: Y });
+      $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + '&deg;');
+    });
+
+    value1 = $handle1.attr('data-value');
+    value2 = $handle2.attr('data-value');
+    drawCircle($container, value1, value2);
+    $container.find('input').val(value1+';'+value2).trigger('change');
+  }
+
+  function init($input) {
+    var values = $input.val() || '0;0';
+    values = values.split(';');
+    var value1 = parseInt(values[0], 10);
+    var value2 = parseInt(values[1], 10);
+
+    $container = $('<div class="circle-range-select-wrapper"></div>');
+    $input.wrap($container);
+    $container = $input.parent();
+
+    $container.append('<div class="handle handle1" data-value="' + value1 + '" data-value-target=".value1"></div>');
+    $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
+    $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+    $container.append('<canvas class="selected-range"></canvas>');
+
+    updateWidget($container);
+
+    $container.on('mousedown touchstart', '.handle', function(e) {
+      isDragging = true;
+      e.preventDefault();
+      $currentHandle = $(e.target);
+      $(document).one('mouseup touchend', function() {
+        isDragging = false;
+        $currentHandle = null;
+      });
+    });
+
+    $(window).on('resize', updateWidget.bind(null, $container));
+  }
+
+  $(document).on('mousemove touchmove', function (e) {
+    if (isDragging) {
+      var $container = $currentHandle.closest('.circle-range-select-wrapper');
+      var radius = $container.width() / 2;
+
+      if (!e.offsetX && e.originalEvent.touches) {
+        // touch events
+        var targetOffset = $(e.target).offset();
+        e.offsetX = e.originalEvent.touches[0].pageX - targetOffset.left;
+        e.offsetY = e.originalEvent.touches[0].pageY - targetOffset.top;
+      }
+      else if(typeof e.offsetX === "undefined" || typeof e.offsetY === "undefined") {
+        // firefox compatibility
+        var targetOffset = $(e.target).offset();
+        e.offsetX = e.pageX - targetOffset.left;
+        e.offsetY = e.pageY - targetOffset.top;
+      }
+
+      var mPos = {
+        x: e.target.offsetLeft + e.offsetX,
+        y: e.target.offsetTop + e.offsetY
+      };
+
+      var atan = Math.atan2(mPos.x - radius, mPos.y - radius);
+      var deg = -atan / (Math.PI / 180) + 180; // final (0-360 positive) degrees from mouse position
+
+      if (deg == 360) {
+        deg = 0;
+      }
+
+      var roundDeg = Math.round(deg);
+
+      $currentHandle.attr('data-value', roundDeg);
+
+      updateWidget($container);
+    }
+  });
+
+
+  $.fn.lcnCircleRangeSelect = function() {
+    return this.each(function() {
+      init($(this));
+    });
+
+  };
+
+}));

@@ -1,3 +1,10 @@
+$lcn-circle-range-select-width: 12em !default;
+$lcn-circle-range-select-border-width: 1em !default;
+$lcn-circle-range-select-border-color: #ccc !default;
+$lcn-circle-range-select-border-selected-range-color: #00ffff !default;
+$lcn-circle-range-select-handle-width: 2.2em !default;
+$lcn-circle-range-select-handle-color: #000 !default;
+
 input.circle-range-select {
   display: none;
 }
@@ -5,36 +12,51 @@ input.circle-range-select {
 .circle-range-select-wrapper {
   position: relative;
   max-width: 100%;
-  width: 100px;
+  width: $lcn-circle-range-select-width;
+  height: $lcn-circle-range-select-width;
+  margin: $lcn-circle-range-select-handle-width/2;
   border-radius: 50%;
-  border: 5px solid #ccc;
+  border: $lcn-circle-range-select-border-width solid $lcn-circle-range-select-border-color;
+  padding: 0 !important;
   cursor: default;
 
   .handle {
     position: absolute;
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    cursor: pointer;
     z-index: 2;
-    background: #000;
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
+
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 3;
+      top: -$lcn-circle-range-select-handle-width/2;
+      left: -$lcn-circle-range-select-handle-width/2;
+      height: $lcn-circle-range-select-handle-width;
+      width: $lcn-circle-range-select-handle-width;
+      border-radius: 50%;
+      background: $lcn-circle-range-select-handle-color;
+    }
+
   }
 
   .selected-range {
     position: absolute;
-    top: -5px;
-    left: -5px;
     z-index: 1;
-    color: green;
+    color: $lcn-circle-range-select-border-selected-range-color;
   }
 
   .values {
     position: absolute;
+    z-index: 2;
     top: 50%;
     margin-top: -0.5em;
     width: 100%;
     font-size: 0.85rem;
     text-align: center;
-    z-index: 2;
   }
 }

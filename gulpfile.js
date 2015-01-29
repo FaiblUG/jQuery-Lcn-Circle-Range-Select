@@ -1,15 +1,11 @@
 var gulp = require('gulp');
 
-function handleError(err) {
-  console.error(err.toString());
-  this.emit('end');
-}
 
 gulp.task('scripts', function() {
   var uglify = require('gulp-uglify');
   gulp
     .src('src/**/*.js')
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('dist'))
   ;
 });
@@ -22,7 +18,9 @@ gulp.task('styles', function() {
 
   gulp
     .src('src/**/*.scss')
-    .pipe(sass())
+    .pipe(sass({
+      errLogToConsole: true
+    }))
     .pipe(prefix(["last 3 versions", "> 1%"], { cascade: true }))
     .pipe(minifyCSS())
     .pipe(gulp.dest('dist'));

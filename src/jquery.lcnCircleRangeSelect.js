@@ -35,16 +35,25 @@
       $canvas = $container.find('canvas'),
       canvas = $canvas[0]
     ;
-    canvas.width = $container.width()+10;
-    canvas.height = $container.height()+10;
+
+    var outerWidth = $container.outerWidth();
+    var innerWidth = $container.innerWidth();
+    var borderWidth = outerWidth - innerWidth;
+    $canvas.css('left', borderWidth*-1);
+    $canvas.css('top', borderWidth*-1);
+
+
+    var radius = (outerWidth - borderWidth / 2) / 2;
+    canvas.width = outerWidth + borderWidth;
+    canvas.height = canvas.width;
     var context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.beginPath();
 
-    var radius = $container.width() / 2;
 
-    context.arc(canvas.width / 2, canvas.height / 2 , radius, degreesToRadians(degreeStart)-Math.PI/2, degreesToRadians(degreeEnd)-Math.PI/2, false);
-    context.lineWidth = 8;
+
+    context.arc(canvas.width / 2, canvas.width / 2,radius, degreesToRadians(degreeStart)-Math.PI/2, degreesToRadians(degreeEnd)-Math.PI/2, false);
+    context.lineWidth = borderWidth/2;
     context.strokeStyle = $canvas.css('color');
     context.stroke();
   }
@@ -57,18 +66,22 @@
     var $handles = $container.find('.handle');
     var $handle1 = $container.find('.handle1');
     var $handle2 = $container.find('.handle2');
-    var width = $container.width();
-    $container.height(width);
-    var radius = width / 2;
-    var sliderWidth = $handles.width();
-    var sliderHeight = $handles.height();
+
+
+    var outerWidth = $container.outerWidth();
+    var innerWidth = $container.innerWidth();
+    var borderWidth = (outerWidth - innerWidth) / 2;
+    var handleWidth = $handles.outerWidth();
+
+    var radius = (outerWidth - borderWidth) / 2;
 
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
       var deg = $handle.attr('data-value');
-      var X = Math.round(radius * Math.sin(deg*Math.PI/180));
-      var Y = Math.round(radius * -Math.cos(deg*Math.PI/180));
-      $handle.css({ left: X+radius-sliderWidth/2, top: Y+radius-sliderHeight/2 });
+
+      var X = Math.round(radius + radius * Math.sin(deg*Math.PI/180));
+      var Y = Math.round(radius + radius * -Math.cos(deg*Math.PI/180));
+      $handle.css({ left: X, top: Y });
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + '&deg;');
     });
 
@@ -133,14 +146,6 @@
 
       var atan = Math.atan2(mPos.x - radius, mPos.y - radius);
       var deg = -atan / (Math.PI / 180) + 180; // final (0-360 positive) degrees from mouse position
-
-
-      // for attraction to multiple of 90 degrees
-      var distance = Math.abs( deg - ( Math.round(deg / 90) * 90 ) );
-
-      if ( distance <= 5 ) {
-        deg = Math.round(deg / 90) * 90;
-      }
 
       if (deg == 360) {
         deg = 0;
