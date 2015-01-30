@@ -21,6 +21,16 @@ Usage
     
     <input type="text" class="circle-range-select" value="0;360" /></div>
     
+The initial value can be defined via the value attribute:
+    
+    value="0;360"
+    
+It is also possible to override the min, max and unit options:
+    
+    data-min="0"
+    data-max="360"
+    data-unit="&deg;"
+    
 ### 3. Include Script and Styles
     
     <link rel="stylesheet" href="dist/jquery.lcnCircleRangeSelect.css">

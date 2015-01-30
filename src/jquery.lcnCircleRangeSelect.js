@@ -67,7 +67,6 @@
     var $handle1 = $container.find('.handle1');
     var $handle2 = $container.find('.handle2');
 
-
     var outerWidth = $container.outerWidth();
     var innerWidth = $container.innerWidth();
     var borderWidth = (outerWidth - innerWidth) / 2;
@@ -75,20 +74,28 @@
 
     var radius = (outerWidth - borderWidth) / 2;
 
+    var $input = $container.find('input');
+    var minValue = $input.attr('data-min') || 0;
+    var maxValue = $input.attr('data-max') || 360;
+    var unit = $input.attr('data-unit') || '&deg;';
+    var steps = maxValue - minValue
+    var stepSize = 360/steps;
+
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
-      var deg = $handle.attr('data-value');
+      var value = $handle.attr('data-value');
+      var deg = value*stepSize;
 
       var X = Math.round(radius + radius * Math.sin(deg*Math.PI/180));
       var Y = Math.round(radius + radius * -Math.cos(deg*Math.PI/180));
       $handle.css({ left: X, top: Y });
-      $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + '&deg;');
+      $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + unit);
     });
 
     value1 = $handle1.attr('data-value');
     value2 = $handle2.attr('data-value');
-    drawCircle($container, value1, value2);
-    $container.find('input').val(value1+';'+value2).trigger('change');
+    drawCircle($container, value1 * stepSize, value2 * stepSize);
+    $input.val(value1+';'+value2).trigger('change');
   }
 
   function init($input) {
@@ -147,13 +154,19 @@
       var atan = Math.atan2(mPos.x - radius, mPos.y - radius);
       var deg = -atan / (Math.PI / 180) + 180; // final (0-360 positive) degrees from mouse position
 
-      if (deg == 360) {
-        deg = 0;
-      }
+      var $input = $container.find('input');
+      var minValue = $input.attr('data-min') || 0;
+      var maxValue = $input.attr('data-max') || 360;
+      var steps = maxValue - minValue
+      var stepSize = 360/steps;
 
-      var roundDeg = Math.round(deg);
+      var value = Math.round(deg/stepSize);
+      //if (value == maxValue) {
+      //  value = minValue;
+      //}
 
-      $currentHandle.attr('data-value', roundDeg);
+
+      $currentHandle.attr('data-value', value);
 
       updateWidget($container);
     }
