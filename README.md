@@ -19,7 +19,7 @@ Usage
 
 ### 2. Include input form element which should contain your circle range (format "startDegrees;endDegrees")
     
-    <input type="text" class="circle-range-select" value="0;360" /></div>
+    <input type="text" class="circle-range-select" value="0;360">
     
 The initial value can be defined via the value attribute:
     
