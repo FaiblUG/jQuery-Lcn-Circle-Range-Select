@@ -1,11 +1,17 @@
 {
   "name": "jquery-lcn-circle-range-select",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "360 degree circle range selext input widget",
-  "main": "dist/jquery.lcnCircleRangeSelect.js",
+  "main": "./dist/jquery.lcnCircleRangeSelect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browser": {
+    "jquery-lcn-circle-range-select": "./dist/jquery.lcnCircleRangeSelect.js"
+  },
+  "style": [
+    "./dist/jquery.lcnCircleRangeSelect.css"
+  ],
   "devDependencies": {
     "gulp": "~3.8",
     "gulp-minify-css": "~0.3",
