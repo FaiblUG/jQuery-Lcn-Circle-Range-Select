@@ -75,16 +75,16 @@
     var radius = (outerWidth - borderWidth) / 2;
 
     var $input = $container.find('input');
-    var minValue = $input.attr('data-min') || 0;
-    var maxValue = $input.attr('data-max') || 360;
-    var unit = $input.attr('data-unit') || '&deg;';
-    var steps = maxValue - minValue
-    var stepSize = 360/steps;
+    var minValue = parseFloat($input.attr('data-min')) || 0;
+    var maxValue = parseFloat($input.attr('data-max')) || 360;
+    var unit = $input.attr('data-unit') === undefined ? '&deg;' : $input.attr('data-unit');
+    var steps = maxValue - minValue;
+    var stepSizeInDegrees = 360/steps;
 
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
-      var value = $handle.attr('data-value');
-      var deg = value*stepSize;
+      var value = parseFloat($handle.attr('data-value'));
+      var deg = (value - minValue)*stepSizeInDegrees;
 
       var X = Math.round(radius + radius * Math.sin(deg*Math.PI/180));
       var Y = Math.round(radius + radius * -Math.cos(deg*Math.PI/180));
@@ -94,7 +94,7 @@
 
     value1 = $handle1.attr('data-value');
     value2 = $handle2.attr('data-value');
-    drawCircle($container, value1 * stepSize, value2 * stepSize);
+    drawCircle($container, (value1 - minValue) * stepSizeInDegrees, (value2 - minValue) * stepSizeInDegrees);
     $input.val(value1+';'+value2).trigger('change');
   }
 
@@ -155,12 +155,13 @@
       var deg = -atan / (Math.PI / 180) + 180; // final (0-360 positive) degrees from mouse position
 
       var $input = $container.find('input');
-      var minValue = $input.attr('data-min') || 0;
-      var maxValue = $input.attr('data-max') || 360;
-      var steps = maxValue - minValue
+      var minValue = parseFloat($input.attr('data-min')) || 0;
+      var maxValue = parseFloat($input.attr('data-max')) || 360;
+      var steps = maxValue - minValue;
       var stepSize = 360/steps;
 
-      var value = Math.round(deg/stepSize);
+      var value = minValue + Math.round(deg/stepSize);
+      console.log(deg, stepSize, steps, value);
       //if (value == maxValue) {
       //  value = minValue;
       //}
