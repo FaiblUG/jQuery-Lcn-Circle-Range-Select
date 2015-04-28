@@ -1,39 +1,49 @@
 var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
 
 
 gulp.task('scripts', function() {
-  var uglify = require('gulp-uglify');
-  gulp
+  return gulp
     .src('src/**/*.js')
-    .pipe(uglify())
+    .pipe(gulp.dest('dist'))
+    .pipe(plugins.rename(function (path) {
+      path.basename += ".min";
+    }))
+    .pipe(plugins.uglify())
+    .pipe(gulp.dest('dist'))
+    .pipe(plugins.gzip())
     .pipe(gulp.dest('dist'))
   ;
 });
 
 gulp.task('styles', function() {
-  var
-    sass = require('gulp-sass'),
-    minifyCSS = require('gulp-minify-css'),
-    prefix = require('gulp-autoprefixer');
-
-  gulp
+  return gulp
     .src('src/**/*.scss')
-    .pipe(sass({
+    .pipe(plugins.sass({
       errLogToConsole: true
     }))
-    .pipe(prefix(["last 3 versions", "> 1%"], { cascade: true }))
-    .pipe(minifyCSS())
-    .pipe(gulp.dest('dist'));
+    .pipe(plugins.autoprefixer(["last 3 versions", "> 1%"], { cascade: true }))
+    .pipe(gulp.dest('dist'))
+    .pipe(plugins.rename(function (path) {
+      path.basename += ".min";
+    }))
+    .pipe(plugins.minifyCss())
+    .pipe(gulp.dest('dist'))
+    .pipe(plugins.gzip())
+    .pipe(gulp.dest('dist'))
+  ;
 });
 
-gulp.task('clean', function() {
-  var clean = require('gulp-clean');
-  return gulp
-    .src(['dist'], { read: false })
-    .pipe(clean());
+gulp.task('install', function() {
+  return gulp.src(['./package.json']).pipe(plugins.install());
 });
 
-gulp.task('default', ['clean'], function() {
+gulp.task('clean', function(callback) {
+  var del = require('del');
+  del(['dist/**/*'], callback);
+});
+
+gulp.task('default', ['clean', 'install'], function() {
   gulp.start('scripts');
   gulp.start('styles');
 

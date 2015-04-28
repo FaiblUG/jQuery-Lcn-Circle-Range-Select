@@ -1,11 +1,12 @@
 {
   "name": "jquery-lcn-circle-range-select",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "main": "dist/jquery.lcnCircleRangeSelect.js",
   "ignore": [
     ".gitignore",
     "package.json",
     "gulpfile.js",
-    "bower.json"
+    "bower.json",
+    "node_modules"
   ]
 }

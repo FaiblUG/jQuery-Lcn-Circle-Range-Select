@@ -63,9 +63,17 @@
   }
 
   function updateWidget($container) {
-    var $handles = $container.find('.handle');
-    var $handle1 = $container.find('.handle1');
-    var $handle2 = $container.find('.handle2');
+    var $input = $container.find('input');
+    var isSingleValue = _isSingleValue($input);
+    if (isSingleValue) {
+      var $handles = $container.find('.handle1');
+      var $handle1 = $handles;
+    }
+    else {
+      var $handles = $container.find('.handle');
+      var $handle1 = $container.find('.handle1');
+      var $handle2 = $container.find('.handle2');
+    }
 
     var outerWidth = $container.outerWidth();
     var innerWidth = $container.innerWidth();
@@ -74,7 +82,7 @@
 
     var radius = (outerWidth - borderWidth) / 2;
 
-    var $input = $container.find('input');
+
     var minValue = parseFloat($input.attr('data-min')) || 0;
     var maxValue = parseFloat($input.attr('data-max')) || 360;
     var unit = $input.attr('data-unit') === undefined ? '&deg;' : $input.attr('data-unit');
@@ -93,24 +101,42 @@
     });
 
     value1 = $handle1.attr('data-value');
-    value2 = $handle2.attr('data-value');
-    drawCircle($container, (value1 - minValue) * stepSizeInDegrees, (value2 - minValue) * stepSizeInDegrees);
-    $input.val(value1+';'+value2).trigger('change');
+    if (isSingleValue) {
+      $input.val(value1).trigger('change');
+    }
+    else {
+      value2 = $handle2.attr('data-value');
+      drawCircle($container, (value1 - minValue) * stepSizeInDegrees, (value2 - minValue) * stepSizeInDegrees);
+      $input.val(value1 + ';' + value2).trigger('change');
+    }
   }
 
   function init($input) {
-    var values = $input.val() || '0;0';
-    values = values.split(';');
-    var value1 = parseInt(values[0], 10);
-    var value2 = parseInt(values[1], 10);
+    var isSingleValue = _isSingleValue($input);
+    if (isSingleValue) {
+      var value1 = parseFloat($input.val() || 0);
+    }
+    else {
+      var values = $input.val() || '0;0';
+      values = values.split(';');
+      var value1 = parseFloat(values[0], 10);
+      var value2 = parseFloat(values[1], 10);
+    }
+
 
     $container = $('<div class="circle-range-select-wrapper"></div>');
     $input.wrap($container);
     $container = $input.parent();
 
     $container.append('<div class="handle handle1" data-value="' + value1 + '" data-value-target=".value1"></div>');
-    $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
-    $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+    if (isSingleValue) {
+      $container.append('<div class="values"><span class="value1"></span></div>');
+    }
+    else {
+      $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
+      $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+    }
+
     $container.append('<canvas class="selected-range"></canvas>');
 
     updateWidget($container);
@@ -126,6 +152,11 @@
     });
 
     $(window).on('resize', updateWidget.bind(null, $container));
+  }
+
+
+  function _isSingleValue($input) {
+    return $input.attr('data-single-value') !== undefined && $input.attr('data-single-value') !== 'false';
   }
 
   $(document).on('mousemove touchmove', function (e) {

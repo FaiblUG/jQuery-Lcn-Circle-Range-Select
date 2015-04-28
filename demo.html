@@ -3,22 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>jQuery.lcnCircleRangeSelect Demo</title>
-  <link rel="stylesheet" href="dist/jquery.lcnCircleRangeSelect.css">
+  <link rel="stylesheet" href="dist/jquery.lcnCircleRangeSelect.min.css">
 </head>
 <body>
 
 <h1>jQuery.lcnCircleRangeSelect Demo</h1>
 
 <h2>Circle demo</h2>
-<input type="text" id="test-1" name="test-1" class="circle-range-select">
+<input type="text" name="test-1" class="circle-range-select">
 
 <h2>Clock demo with predefined value</h2>
-<input type="text" id="test-2" name="test-2" class="circle-range-select" value="0;6" data-min="0" data-max="12" data-unit="h">
+<input type="text" name="test-2" class="circle-range-select" value="0;6" data-min="0" data-max="12" data-unit="h">
+
+<h2>Single value demo</h2>
+<input type="text" name="test-3" class="circle-range-select" data-single-value>
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<script src="dist/jquery.lcnCircleRangeSelect.js"></script>
+<script src="dist/jquery.lcnCircleRangeSelect.min.js"></script>
 <script>jQuery('input.circle-range-select').lcnCircleRangeSelect();</script>
 </body>
 </html>
