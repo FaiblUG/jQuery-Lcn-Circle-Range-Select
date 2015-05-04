@@ -125,6 +125,15 @@
 
 
     $container = $('<div class="circle-range-select-wrapper"></div>');
+
+    var backgroundImage = $input.attr('data-bg-image');
+    if (backgroundImage) {
+      $container.css({
+        'background-image': 'url("' + backgroundImage + '")',
+        'background-size': 'contain'
+      });
+    }
+
     $input.wrap($container);
     $container = $input.parent();
 
