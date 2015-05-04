@@ -35,6 +35,10 @@ If you only need a single value instead of a range, you can add the data-single-
 
     data-single-value
     
+You can add a backround-image with data-bg-image.
+
+    data-bg-image="http://..."
+
 The value of the input form field then only consists of a single number and not a number pair.
     
 ### 3. Include Script and Styles
