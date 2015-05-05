@@ -10,20 +10,19 @@
 <h1>jQuery.lcnCircleRangeSelect Demo</h1>
 
 <h2>Circle demo</h2>
-<input type="text" name="test-1" class="circle-range-select">
+<input type="text" name="test-1" class="circle-range-select" data-auto-init>
 
 <h2>Clock demo with predefined value</h2>
-<input type="text" name="test-2" class="circle-range-select" value="0;6" data-min="0" data-max="12" data-unit="h">
+<input type="text" name="test-2" class="circle-range-select" data-auto-init value="0;6" data-min="0" data-max="12" data-unit="h">
 
 <h2>Single value demo</h2>
-<input type="text" name="test-3" class="circle-range-select" data-single-value>
+<input type="text" name="test-3" class="circle-range-select" data-auto-init data-single-value>
 
 <h2>Circle demo with background-image</h2>
-<input type="text" name="test-1" class="circle-range-select" data-bg-image="//maps.googleapis.com/maps/api/staticmap?center=-33.550551,18.413086&zoom=8&format=png&sensor=false&size=200x200&maptype=hybrid">
+<input type="text" name="test-1" class="circle-range-select" data-auto-init data-bg-image="//maps.googleapis.com/maps/api/staticmap?center=-33.550551,18.413086&zoom=8&format=png&sensor=false&size=200x200&maptype=hybrid">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script src="dist/jquery.lcnCircleRangeSelect.min.js"></script>
-<script>jQuery('input.circle-range-select').lcnCircleRangeSelect();</script>
 </body>
 </html>

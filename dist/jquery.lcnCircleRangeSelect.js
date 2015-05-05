@@ -220,4 +220,8 @@
 
   };
 
+  $(function() { $('input.circle-range-select[data-auto-init]').lcnCircleRangeSelect(); });
+
+  return $.fn.lcnCircleRangeSelect;
+
 }));
