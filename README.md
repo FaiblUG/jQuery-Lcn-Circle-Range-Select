@@ -35,7 +35,7 @@ If you only need a single value instead of a range, you can add the data-single-
 
     data-single-value
     
-You can add a backround-image with data-bg-image.
+You can add a background-image with data-bg-image.
 
     data-bg-image="http://..."
 
