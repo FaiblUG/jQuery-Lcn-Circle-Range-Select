@@ -201,7 +201,6 @@
       var stepSize = 360/steps;
 
       var value = minValue + Math.round(deg/stepSize);
-      console.log(deg, stepSize, steps, value);
       //if (value == maxValue) {
       //  value = minValue;
       //}
