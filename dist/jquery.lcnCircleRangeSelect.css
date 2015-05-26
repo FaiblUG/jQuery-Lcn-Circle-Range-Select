@@ -6,10 +6,9 @@ input.circle-range-select {
   max-width: 100%;
   width: 10em;
   height: 10em;
-  margin: 1em;
+  padding: 1em !important;
   border-radius: 50%;
   border: 0.8em solid #ccc;
-  padding: 0 !important;
   cursor: default; }
   .circle-range-select-wrapper .handle {
     position: absolute;
@@ -34,6 +33,7 @@ input.circle-range-select {
     z-index: 1;
     color: #00ffff; }
   .circle-range-select-wrapper .values {
+    pointer-events: none;
     position: absolute;
     z-index: 2;
     top: 50%;

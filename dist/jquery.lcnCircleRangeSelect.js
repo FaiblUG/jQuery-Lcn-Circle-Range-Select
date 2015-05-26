@@ -170,18 +170,38 @@
 
   $(document).on('mousemove touchmove', function (e) {
     if (isDragging) {
+
+      var $draggingTarget = $(e.target);
+
+      $draggingWrapper = $draggingTarget.closest('.circle-range-select-wrapper');
+      if ($draggingWrapper.length === 0) {
+        return;
+      }
+
+      if ($currentHandle.hasClass('handle1')) {
+        $draggingHandle = $draggingWrapper.find('.handle1');
+      }
+      else if ($currentHandle.hasClass('handle2')) {
+        $draggingHandle = $draggingWrapper.find('.handle2');
+      }
+
+      if ($draggingHandle[0] !== $currentHandle[0]) {
+        return;
+      }
+
+
       var $container = $currentHandle.closest('.circle-range-select-wrapper');
       var radius = $container.width() / 2;
 
       if (!e.offsetX && e.originalEvent.touches) {
         // touch events
-        var targetOffset = $(e.target).offset();
+        var targetOffset = $draggingTarget.offset();
         e.offsetX = e.originalEvent.touches[0].pageX - targetOffset.left;
         e.offsetY = e.originalEvent.touches[0].pageY - targetOffset.top;
       }
       else if(typeof e.offsetX === "undefined" || typeof e.offsetY === "undefined") {
         // firefox compatibility
-        var targetOffset = $(e.target).offset();
+        var targetOffset = $draggingTarget.offset();
         e.offsetX = e.pageX - targetOffset.left;
         e.offsetY = e.pageY - targetOffset.top;
       }
