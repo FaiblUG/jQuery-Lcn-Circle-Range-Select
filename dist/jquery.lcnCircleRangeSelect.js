@@ -32,7 +32,7 @@
 
   function drawCircle($container, degreeStart, degreeEnd) {
     var
-      $canvas = $container.find('canvas'),
+    $canvas = $container.find('canvas'),
       canvas = $canvas[0]
     ;
 
@@ -65,20 +65,15 @@
   function updateWidget($container) {
     var $input = $container.find('input');
     var isSingleValue = _isSingleValue($input);
-    if (isSingleValue) {
-      var $handles = $container.find('.handle1');
-      var $handle1 = $handles;
-    }
-    else {
-      var $handles = $container.find('.handle');
-      var $handle1 = $container.find('.handle1');
+    var $handles = $container.find('.handle');
+    var $handle1 = $container.find('.handle1');
+    if (!isSingleValue) {
       var $handle2 = $container.find('.handle2');
     }
 
     var outerWidth = $container.outerWidth();
     var innerWidth = $container.innerWidth();
     var borderWidth = (outerWidth - innerWidth) / 2;
-    var handleWidth = $handles.outerWidth();
 
     var radius = (outerWidth - borderWidth) / 2;
 
@@ -119,8 +114,8 @@
     else {
       var values = $input.val() || '0;0';
       values = values.split(';');
-      var value1 = parseFloat(values[0], 10);
-      var value2 = parseFloat(values[1], 10);
+      var value1 = parseFloat(values[0]);
+      var value2 = parseFloat(values[1]);
     }
 
 
@@ -144,9 +139,8 @@
     else {
       $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
       $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+      $container.append('<canvas class="selected-range"></canvas>');
     }
-
-    $container.append('<canvas class="selected-range"></canvas>');
 
     updateWidget($container);
 
@@ -206,10 +200,18 @@
         e.offsetY = e.pageY - targetOffset.top;
       }
 
-      var mPos = {
-        x: e.target.offsetLeft + e.offsetX,
-        y: e.target.offsetTop + e.offsetY
-      };
+      if ($draggingTarget.hasClass('handle')) {
+        var mPos = {
+          x: e.target.offsetLeft + e.offsetX,
+          y: e.target.offsetTop + e.offsetY
+        };
+      }
+      else {
+        var mPos = {
+          x: e.offsetX,
+          y: e.offsetY
+        };
+      }
 
       var atan = Math.atan2(mPos.x - radius, mPos.y - radius);
       var deg = -atan / (Math.PI / 180) + 180; // final (0-360 positive) degrees from mouse position
