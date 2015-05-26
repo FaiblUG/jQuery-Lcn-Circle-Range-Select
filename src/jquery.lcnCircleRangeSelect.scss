@@ -14,6 +14,7 @@ input.circle-range-select {
   max-width: 100%;
   width: $lcn-circle-range-select-width;
   height: $lcn-circle-range-select-width;
+  margin: $lcn-circle-range-select-handle-width/2;
   padding: $lcn-circle-range-select-handle-width/2 !important;
   border-radius: 50%;
   border: $lcn-circle-range-select-border-width solid $lcn-circle-range-select-border-color;
