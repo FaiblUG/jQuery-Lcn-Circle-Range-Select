@@ -1,6 +1,6 @@
 {
   "name": "jquery-lcn-circle-range-select",
-  "version": "1.1.7",
+  "version": "2.0.0",
   "description": "360 degree circle range select input widget",
   "main": "./dist/jquery.lcnCircleRangeSelect.js",
   "scripts": {
@@ -29,7 +29,11 @@
     "type": "git",
     "url": "https://github.com/FaiblUG/jQuery-Lcn-Circle-Range-Select.git"
   },
-  "author": "Jonas Fischer-Maeck",
+  "author": "Faibl UG <info@faibl.org>",
+  "contributors": [
+    "Jonas Fischer-Maeck <jonas@locaine.com> (https://www.jonasfischer.net)",
+    "Hannes Kandulla <hannes@locaine.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/FaiblUG/jQuery-Lcn-Circle-Range-Select/issues"
