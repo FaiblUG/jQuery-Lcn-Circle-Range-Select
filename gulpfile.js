@@ -40,14 +40,17 @@ gulp.task('install', function() {
 
 gulp.task('clean', function(callback) {
   var del = require('del');
-  del(['dist/**/*'], callback);
+  return del(['dist/**/*'], callback);
 });
 
-gulp.task('default', ['clean', 'install'], function() {
-  gulp.start('scripts');
-  gulp.start('styles');
-
+gulp.task('default', ['clean', 'install'], function(callback) {
+  var runSequence = require('run-sequence');
+  runSequence(
+      ['scripts', 'styles'],
+      callback
+  );
 });
+
 
 gulp.task('watch', ['default'], function() {
   gulp.watch(['src/**/*.js'], ['scripts']);

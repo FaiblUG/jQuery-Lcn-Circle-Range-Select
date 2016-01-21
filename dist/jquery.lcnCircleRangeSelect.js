@@ -1,4 +1,6 @@
 (function (root, factory) {
+  'use strict';
+
   var $ = root.jQuery;
 
   if (typeof define === 'function' && define.amd) {
@@ -95,14 +97,16 @@
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + unit);
     });
 
-    value1 = $handle1.attr('data-value');
+    var extraChangeEventParameters = [{source: 'lcnCircleRangeSelect'}];
+
+    var value1 = $handle1.attr('data-value');
     if (isSingleValue) {
-      $input.val(value1).trigger('change');
+      $input.val(value1).trigger('change', extraChangeEventParameters);
     }
     else {
-      value2 = $handle2.attr('data-value');
+      var value2 = $handle2.attr('data-value');
       drawCircle($container, (value1 - minValue) * stepSizeInDegrees, (value2 - minValue) * stepSizeInDegrees);
-      $input.val(value1 + ';' + value2).trigger('change');
+      $input.val(value1 + ';' + value2).trigger('change', extraChangeEventParameters);
     }
   }
 
@@ -119,7 +123,7 @@
     }
 
 
-    $container = $('<div class="circle-range-select-wrapper"></div>');
+    var $container = $('<div class="circle-range-select-wrapper"></div>');
 
     var backgroundImage = $input.attr('data-bg-image');
     if (backgroundImage) {
@@ -142,6 +146,7 @@
       $container.append('<canvas class="selected-range"></canvas>');
     }
 
+
     updateWidget($container);
 
     $container.on('mousedown touchstart', '.handle', function(e) {
@@ -152,6 +157,29 @@
         isDragging = false;
         $currentHandle = null;
       });
+    });
+
+    $input.on('change', function(e, options) {
+      if (options && typeof options === 'object' && options.source === 'lcnCircleRangeSelect') {
+        return;
+      }
+
+      var $input = $container.find('input');
+      var isSingleValue = _isSingleValue($input);
+      var $handle1 = $container.find('.handle1');
+
+      if (isSingleValue) {
+        $handle1.attr('data-value', parseFloat($input.val() || 0));
+      }
+      else {
+        var $handle2 = $container.find('.handle2');
+        var values = $input.val() || '0;0';
+        values = values.split(';');
+        $handle1.attr('data-value', parseFloat(values[0]));
+        $handle2.attr('data-value', parseFloat(values[1]));
+      }
+
+      updateWidget($container);
     });
 
     $(window).on('resize', updateWidget.bind(null, $container));

@@ -15,7 +15,7 @@ Usage
 
 ### 1. Include jQuery
     
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 ### 2. Include input form element which should contain your circle range (format "startDegrees;endDegrees")
     
@@ -54,3 +54,10 @@ The value of the input form field then only consists of a single number and not 
 If you omit the data-auto-init attribute on your input tag or if you create input tags dynamically after the domReady event has fired, you need to initialize the widget manually:
     
     <script>jQuery('input.circle-range-select').lcnCircleRangeSelect();</script>   
+
+
+#### Update value programatically
+
+If you update the value of the widget's input field via javascript, you need to trigger the change event in order to re-render the widget:
+    
+    <script>jQuery('#my-input').val('90;270').trigger('change');</script>
