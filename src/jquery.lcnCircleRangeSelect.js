@@ -69,6 +69,7 @@
     var isSingleValue = _isSingleValue($input);
     var $handles = $container.find('.handle');
     var $handle1 = $container.find('.handle1');
+    var currentValue = $input.val();
     if (!isSingleValue) {
       var $handle2 = $container.find('.handle2');
     }
@@ -99,14 +100,20 @@
 
     var extraChangeEventParameters = [{source: 'lcnCircleRangeSelect'}];
 
+    // Set the new value if it's different from the current value
     var value1 = $handle1.attr('data-value');
     if (isSingleValue) {
-      $input.val(value1).trigger('change', extraChangeEventParameters);
+      if (currentValue !== value1) {
+        $input.val(value1).trigger('change', extraChangeEventParameters);
+      }
     }
     else {
       var value2 = $handle2.attr('data-value');
       drawCircle($container, (value1 - minValue) * stepSizeInDegrees, (value2 - minValue) * stepSizeInDegrees);
-      $input.val(value1 + ';' + value2).trigger('change', extraChangeEventParameters);
+      var newValue = value1 + ';' + value2;
+      if (currentValue !== newValue) {
+        $input.val(newValue).trigger('change', extraChangeEventParameters);
+      }
     }
   }
 
